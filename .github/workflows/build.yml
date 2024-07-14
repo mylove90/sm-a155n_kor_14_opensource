@@ -1,0 +1,51 @@
+name: Build Kernel
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout main repository
+      uses: actions/checkout@v2
+      with:
+        repository: mylove90/sm-a155n_kor_14_opensource
+
+    - name: Sync toolchains from GitLab
+      run: |
+        git clone --depth=1 https://gitlab.com/mylove90/toolchain.git toolchain
+        cd toolchain
+        git pull origin A155F/N
+        cp -r * ../Kernel/
+
+    - name: Set up build environment
+      run: |
+        sudo apt update
+        sudo apt install -y build-essential bc gcc-aarch64-linux-gnu gcc-arm-linux-gnueabi libssl-dev libfl-dev
+        sudo apt install -y curl git ftp lftp wget libarchive-tools ccache python2 python2-dev
+        sudo apt install -y zip unzip tar gzip bzip2 rar unrar
+
+    - name: Build kernel
+      run: |
+        cd Kernel
+        chmod a+x build_kernel.sh
+        bash build_kernel.sh
+
+    - name: Upload kernel image
+      uses: actions/upload-artifact@v2
+      with:
+        name: kernel-image
+        path: out/target/product/a15/obj/KERNEL_OBJ/kernel-5.10/arch/arm64/boot/Image.gz
+
+    - name: Upload kernel modules
+      uses: actions/upload-artifact@v2
+      with:
+        name: kernel-modules
+        path: out/target/product/a15/obj/KERNEL_OBJ/*.ko
