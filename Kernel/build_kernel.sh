@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd kernel-5.10
-python scripts/gen_build_config.py --kernel-defconfig a15_kor_00_defconfig --kernel-defconfig-overlays entry_level.config -m user -o ../out/target/product/a15_kor/obj/KERNEL_OBJ/build.config
+python2 scripts/gen_build_config.py --kernel-defconfig a15_kor_00_defconfig --kernel-defconfig-overlays entry_level.config -m user -o ../out/target/product/a15_kor/obj/KERNEL_OBJ/build.config
 
 export ARCH=arm64
 export CROSS_COMPILE="aarch64-linux-gnu-"
