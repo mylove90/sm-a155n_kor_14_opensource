@@ -19,7 +19,7 @@ jobs:
         swap-size-mb: 10240
 
     - name: Checkout main repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4.1.7
       with:
         repository: mylove90/sm-a155n_kor_14_opensource
 
@@ -30,6 +30,10 @@ jobs:
         git pull origin A155F/N
         cp -r * ../Kernel/
 
+    - name: Sync Anykernel3
+      run: |
+        git clone --depth=1 --branch A15 https://github.com/mylove90/AnyKernel3 AnyKernel3
+        
     - name: Set up build environment
       run: |
         sudo apt update
@@ -43,14 +47,15 @@ jobs:
         chmod a+x build_kernel.sh
         bash build_kernel.sh
 
-    - name: Upload kernel image
-      uses: actions/upload-artifact@v2
-      with:
-        name: kernel-image
-        path: out/target/product/a15/obj/KERNEL_OBJ/kernel-5.10/arch/arm64/boot/Image.gz
+    - name: Pack AnyKernel3 ZIP
+      run: |
+        cp -f Kernel/out/target/product/a15/obj/KERNEL_OBJ/kernel-5.10/arch/arm64/boot/Image.gz ./AnyKernel3/
+        cp -f Kernel/out/target/product/a15/obj/KERNEL_OBJ/*.ko ./AnyKernel3/
+        cd AnyKernel3/
+        zip -q -r "test.zip" *
 
-    - name: Upload kernel modules
-      uses: actions/upload-artifact@v2
+    - name: Upload AnyKernel3 ZIP
+      uses: actions/upload-artifact@v4.3.4
       with:
-        name: kernel-modules
-        path: out/target/product/a15/obj/KERNEL_OBJ/*.ko
+        name: test.zip
+        path: AnyKernel3/*
