@@ -50,12 +50,12 @@ jobs:
     - name: Pack AnyKernel3 ZIP
       run: |
         cp -f Kernel/out/target/product/a15_kor/obj/KERNEL_OBJ/kernel-5.10/arch/arm64/boot/Image.gz ./AnyKernel3/
-        cp -f Kernel/out/target/product/a15_kor/obj/KERNEL_OBJ/*.ko ./AnyKernel3/
+        cp -f Kernel/out/target/product/a15_kor/obj/KERNEL_OBJ/*.ko ./AnyKernel3/modules/system/lib/modules/
         cd AnyKernel3/
-        zip -q -r "test.zip" *
+        zip -r9 test.zip * -x README.md test.zip .git/\* .github/\*
 
     - name: Upload AnyKernel3 ZIP
       uses: actions/upload-artifact@v4.3.4
       with:
         name: test.zip
-        path: AnyKernel3/*
+        path: AnyKernel3/
