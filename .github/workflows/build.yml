@@ -50,6 +50,20 @@ jobs:
     - name: Pack AnyKernel3 ZIP
       run: |
         ls -la
+        cd Kernel
+        ls -la
+        cd out
+        ls -la
+        cd target
+        ls -la
+        cd product
+        ls -la
+        cd a15
+        ls -la
+        cd obj
+        ls -la
+        cd KERNEL_OBJ
+        ls -la
         cp -f Kernel/out/target/product/a15/obj/KERNEL_OBJ/Image.gz ./AnyKernel3/
         cp -f Kernel/out/target/product/a15/obj/KERNEL_OBJ/*.ko ./AnyKernel3/
         cd AnyKernel3/
