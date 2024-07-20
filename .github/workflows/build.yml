@@ -58,4 +58,4 @@ jobs:
       uses: actions/upload-artifact@v4.3.4
       with:
         name: test.zip
-        path: AnyKernel3/test.zip
+        file: AnyKernel3/test.zip
