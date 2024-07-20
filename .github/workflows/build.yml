@@ -60,4 +60,4 @@ jobs:
       uses: actions/upload-artifact@v4.3.4
       with:
         name: a155n-kernel.zip
-        file: zip/a155n-kernel.zip
+        path: zip/a155n-kernel.zip
